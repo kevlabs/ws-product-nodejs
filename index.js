@@ -1,6 +1,7 @@
 const { config } = require('dotenv');
 const express = require('express');
 const pg = require('pg');
+const rateLimit = require('./lib/rate-limit');
 
 // load .env data into process.env
 config();
@@ -9,6 +10,8 @@ const app = express();
 // configs come from standard PostgreSQL env vars
 // https://www.postgresql.org/docs/9.6/static/libpq-envars.html
 const pool = new pg.Pool();
+
+app.use(rateLimit({ limit: 5, periodMs: 60000 }));
 
 const queryHandler = (req, res, next) => {
   pool.query(req.sqlQuery).then((r) => {
