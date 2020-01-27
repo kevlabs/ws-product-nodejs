@@ -11,6 +11,8 @@ const app = express();
 // https://www.postgresql.org/docs/9.6/static/libpq-envars.html
 const pool = new pg.Pool();
 
+// register rate-limit middleware - applied globally to app
+// should be registered on individual routes if each is to have its own limit
 app.use(rateLimit({ limit: 5, periodMs: 60000 }));
 
 const queryHandler = (req, res, next) => {
