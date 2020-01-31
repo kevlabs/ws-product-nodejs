@@ -13,6 +13,7 @@ const pool = new pg.Pool();
 
 // register rate-limit middleware - applied globally to app
 // should be registered on individual routes if each is to have its own limit
+// tentatively set to 10 connections per min
 app.use(rateLimit({ limit: 10, periodMs: 60000 }));
 
 const queryHandler = (req, res, next) => {
